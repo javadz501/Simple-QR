@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.tomfong.simpleqr',
+  appId: 'com.tomfong.simpleqr.fork',
   appName: 'Simple QR',
   webDir: 'www',
   android: {
