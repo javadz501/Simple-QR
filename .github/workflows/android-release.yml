@@ -86,8 +86,19 @@ jobs:
         run: |
           set -euo pipefail
           APK="android/app/build/outputs/apk/release/app-release.apk"
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          if [ -z "$SDK_ROOT" ]; then
+            echo "::error::Android SDK root is not configured."
+            exit 1
+          fi
+          APKSIGNER="$SDK_ROOT/build-tools/36.0.0/apksigner"
+          if [ ! -x "$APKSIGNER" ]; then
+            echo "::error::apksigner not found or not executable: $APKSIGNER"
+            ls -la "$SDK_ROOT/build-tools/36.0.0/" || true
+            exit 1
+          fi
           test -s "$APK"
-          apksigner verify --verbose --print-certs "$APK"
+          "$APKSIGNER" verify --verbose --print-certs "$APK"
 
       - name: Publish APK to GitHub Release
         run: |
